@@ -1,0 +1,34 @@
+Médias :
+
+1 - Mostre o ID, nome, qtdChakra e classe Ninja que ele pertence ordenado pela classe.
+select pers.id, pers.nome as Nome, pers.qtdChakra as Chakra, class.nome as "Classe Ninja"
+from personagem as pers
+join classeninja as class on fkclasseninja = class.id order by class.nome;
+
+2 - Mostre a media de todos os personagens genin.
+select avg(qtdChakra) as "Média Chakra" from personagem join classeninja as class on fkclasseninja = class.id
+where class.nome = "Genin";
+
+3 - Mostre o nome do personagem e o nome de seu sensei
+select per.nome as Nome, pers.nome as Sensei
+from personagem as per join personagem as pers on per.fkSensei = pers.id;
+
+4 - Mostre a Soma do chakra de todos os portadores de bijus
+select sum(qtdChakra) as "Soma Chakra" from personagem
+join bijus on fkportador = personagem.id;
+
+Dificil:
+
+
+1 - Mostre o Nome, Cla, Aldeia, e Bijus de todos portadores onde o Chakra é maior que 2000
+select per.nome as Nome, cla.nome as Clã, ald.nome as Aldeia, bij.nome as Biju
+from personagem as per join cla on fkcla = cla.id
+join aldeia as ald on fkaldeia = ald.id 
+join bijus as bij on fkportador = per.id where per.qtdChakra > 2000;
+
+2 - Mostre o Nome, jutsu e custo de chakra quando o custo do chakra for maior que 100;
+select pers.nome as Nome, jutsu.nome as Jutsu, jutsu.custoChakra as Custo from personagem as pers
+join personagemJutsu as PJ on fkpersonagem = pers.id
+join jutsu on fkjutsu = jutsu.id where custoChakra > 100;
+
+

@@ -1,0 +1,53 @@
+DIFICIL:
+Informe o nome de todos os clãs cadastrados, a soma total do chakra de seus membros e a qtd de personagens, agrupados pelo clã.
+
+select 
+cla.nome Clã,
+sum(pers.qtdChakra) 'Soma da qtd de chakra',
+count(pers.id) 'Qtd de personagens'
+from cla
+inner join personagem pers on pers.fkcla = cla.id
+group by cla.nome;
+
+------------------------------------------------------------------------------------------------------------------------
+
+CHALLENGE 1:
+Mostrar todos os personagens de Konohagakure e seus dados, mostrar somente os que possuem a quantidade de chakra acima de 3000, 
+nome de suas classes ninjas, aldeia, os ordene por ordem decrescente de quantidade de chakra.
+Sobre seus senseis, mostre seu id, nome e data de nascimento. (mostrar inclusive os personagens que não possuem sensei).
+
+select
+pers.id IdPersonagem,
+pers.nome Personagem,
+pers.qtdChakra 'Quantidade de Chakra',
+clnj.nome 'Classe Ninja',
+cla.nome 'Clã',
+ald.nome 'Aldeia',
+pers.dtNascimento 'Data de Nascimento',
+sen.id IdSensei,
+sen.nome Sensei,
+sen.dtNascimento 'Data de Nascimento'
+from personagem pers
+inner join classeNinja clnj on pers.fkclasseNinja = clnj.id
+inner join cla on pers.fkcla = cla.id
+inner join aldeia ald on pers.fkaldeia = ald.id 
+left join personagem sen on pers.fksensei = sen.id
+where ald.nome = 'Konohagakure' and pers.qtdChakra > 3000
+order by pers.qtdChakra desc;
+
+--------------------------------------------------------------------------------------------------------------
+
+CHALLENGE 2:
+Mostrar os personagens que possuam jutsu que tenha como segunda letra "u", sua quantidade de chakra atual, 
+seus jutsu e a quantia de chakra que restou após 1 uso e após 9 usos.
+
+select 
+pers.nome Personagem,
+pers.qtdChakra 'Qtd de Chakra',
+jut.nome Jutsu,
+round(pers.qtdChakra - jut.custoChakra, 2) 'Chakra pós uso',
+round(pers.qtdChakra - (jut.custoChakra * 9), 2) 'Chakra pós 9 usos'
+from personagem pers
+inner join personagemJutsu pj on pj.fkpersonagem = pers.id
+inner join jutsu jut on pj.fkjutsu = jut.id
+where jut.nome like '_u%';

@@ -1,0 +1,29 @@
+Facil:
+1. Qual o nome das aldeias e seus respectivos países?
+SELECT nome, pais FROM aldeia;
+
+2. Quais personagens possuem o jutsu 'Rasengan'?
+SELECT p.nome 
+FROM personagem p
+JOIN personagemJutsu pj ON p.id = pj.fkpersonagem
+JOIN jutsu j ON pj.fkjutsu = j.id
+WHERE j.nome = 'Rasengan';
+
+3. Liste todos os clãs presentes no banco de dados.
+SELECT nome FROM cla;
+
+Medio:
+
+4. Quais são os personagens e suas respectivas classes ninja que pertencem ao clã 'Uchiha'?
+SELECT p.nome AS personagem, cln.nome AS classeNinja
+FROM personagem p
+JOIN cla c ON p.fkcla = c.id
+JOIN classeNinja cln ON p.fkclasseNinja = cln.id
+WHERE c.nome = 'Uchiha';
+
+5. Qual o nome dos personagens que são Jinchuuriki, suas respectivas aldeias e as bijus que eles portam?
+SELECT p.nome AS personagem, a.nome AS aldeia, b.nome AS biju
+FROM personagem p
+JOIN aldeia a ON p.fkaldeia = a.id
+JOIN bijus b ON p.id = b.fkportador
+WHERE p.fkclasseNinja = (SELECT id FROM classeNinja WHERE nome = 'Jinchuuriki');
